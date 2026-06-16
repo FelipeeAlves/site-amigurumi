@@ -1,0 +1,81 @@
+.loja-container {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  background-color: #fff5f5;
+  min-height: 100vh;
+}
+.loja-header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #ffe3e3;
+}
+.loja-title {
+  font-size: 2.5rem;
+  color: #d63384;
+  margin-bottom: 10px;
+}
+.loja-subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+.vitrine-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+.vitrine-title {
+  text-align: center;
+  color: #d63384;
+  margin-bottom: 30px;
+}
+.grid-produtos {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.produto-card {
+  background-color: white;
+  border-radius: 15px;
+  width: 280px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  text-align: center;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.produto-imagem {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+.produto-nome {
+  font-size: 1.2rem;
+  margin: 15px 10px 5px 10px;
+  color: #495057;
+}
+.produto-detalhe {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin: 0 0 10px 0;
+}
+.produto-preco {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #28a745;
+  margin: 10px 0;
+}
+.produto-botao {
+  background-color: #d63384;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0 20px;
+}
