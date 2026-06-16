@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import '../styles/Loja.css'; // Apontando corretamente para a pasta styles
 
 function Loja() {
   const [amigurumis, setAmigurumis] = useState([]);
@@ -35,26 +35,26 @@ function Loja() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>Dupla do Ateliê</h1>
-        <p style={styles.subtitle}>Bordados | Amigurumis| Crochê | Patchwork</p>
-        <p style={styles.subtitle}>Feitos à mão com amor, ponto por ponto.</p>
+    <div className="loja-container">
+      <header className="loja-header">
+        <h1 className="loja-title">Dupla do Ateliê</h1>
+        <p className="loja-subtitle">Bordados | Amigurumis | Crochê | Patchwork</p>
+        <p className="loja-subtitle">Feitos à mão com amor, ponto por ponto.</p>
       </header>
 
-      <main style={styles.vitrineContainer}>
-        <h2 style={styles.vitrineTitle}>Nossas Criações Fofas</h2>
-        <div style={styles.gridProdutos}>
+      <main className="vitrine-container">
+        <h2 className="vitrine-title">Nossas Criações Fofas</h2>
+        <div className="grid-produtos">
           {amigurumis.length === 0 ? (
             <p>Nenhum amigurumi disponível no momento. Volte logo! 🧸</p>
           ) : (
             amigurumis.map((item) => (
-              <div key={item._id} style={styles.produtoCard}>
-                <img src={item.imagem} alt={item.nome} style={styles.produtoImagem} />
-                <h3 style={styles.produtoNome}>{item.nome}</h3>
-                <p style={styles.produtoDetalhe}>Tamanho: {item.tamanho} cm</p>
-                <p style={styles.produtoPreco}>R$ {item.preco}</p>
-                <button style={styles.produtoBotao} onClick={() => handleCompra(item.nome, item.preco)}>
+              <div key={item._id} className="produto-card">
+                <img src={item.imagem} alt={item.nome} className="produto-imagem" />
+                <h3 className="produto-nome">{item.nome}</h3>
+                <p className="produto-detalhe">Tamanho: {item.tamanho} cm</p>
+                <p className="produto-preco">R$ {item.preco}</p>
+                <button className="produto-botao" onClick={() => handleCompra(item.nome, item.preco)}>
                   Encomendar Agora
                 </button>
               </div>
@@ -65,22 +65,5 @@ function Loja() {
     </div>
   );
 }
-
-// Estilos básicos da loja
-const styles = {
-  container: { fontFamily: 'Arial, sans-serif', color: '#333', backgroundColor: '#fff5f5', minHeight: '100vh' },
-  header: { textAlign: 'center', padding: '40px 20px', backgroundColor: '#ffe3e3' },
-  title: { fontSize: '2.5rem', color: '#d63384', marginBottom: '10px' },
-  subtitle: { fontSize: '1.2rem', color: '#6c757d' },
-  vitrineContainer: { padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', width: '100%' },
-  vitrineTitle: { textAlign: 'center', color: '#d63384', marginBottom: '30px' },
-  gridProdutos: { display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' },
-  produtoCard: { backgroundColor: 'white', borderRadius: '15px', width: '280px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', textAlign: 'center', paddingBottom: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' },
-  produtoImagem: { width: '100%', height: '220px', objectFit: 'cover' },
-  produtoNome: { fontSize: '1.2rem', margin: '15px 10px 5px 10px', color: '#495057' },
-  produtoDetalhe: { fontSize: '0.9rem', color: '#6c757d', margin: '0 0 10px 0' },
-  produtoPreco: { fontSize: '1.4rem', fontWeight: 'bold', color: '#28a745', margin: '10px 0' },
-  produtoBotao: { backgroundColor: '#d63384', color: 'white', border: 'none', padding: '12px 20px', fontSize: '1rem', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold', margin: '0 20px' }
-};
 
 export default Loja;
