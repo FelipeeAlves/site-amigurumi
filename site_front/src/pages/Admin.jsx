@@ -22,6 +22,13 @@ function Admin() {
 
   useEffect(() => {
     carregarDados();
+
+    const intervalo = setInterval(() => {
+      carregarDados();
+    }, 5000);
+
+    return() => {clearInterval(intervalo)
+    }
   }, []);
 
   const handleInputChange = (e) => {
@@ -83,12 +90,12 @@ function Admin() {
             </div>
 
             <div className="form-group">
-              <label>Preço (ex: 89.90):</label>
+              <label>Preço (ex: R$ 89.90):</label>
               <input type="text" name="preco" value={novoProduto.preco} onChange={handleInputChange} className="form-input" required />
             </div>
 
             <div className="form-group">
-              <label>Tamanho em cm (ex: 20):</label>
+              <label>Tamanho em cm (ex: 20 cm):</label>
               <input type="text" name="tamanho" value={novoProduto.tamanho} onChange={handleInputChange} className="form-input" required />
             </div>
 
@@ -130,7 +137,7 @@ function Admin() {
             ) : (
               pedidos.map((ped) => (
                 <li key={ped._id} className="lista-item">
-                  <div className="item-info">
+                  <div className="item-info" handleCompra>
                     <span className="item-nome">📦 {ped.produtoNome}</span>
                     <span className="item-detalhes">Valor: R$ {ped.preco} | Status: Novo Pedido</span>
                   </div>
