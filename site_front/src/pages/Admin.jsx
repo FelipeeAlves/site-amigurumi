@@ -71,10 +71,20 @@ function Admin() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');     // Apaga o crachá de acesso
+    localStorage.removeItem('adminNome'); // Apaga o nome salvo
+    window.location.href = '/login';      // Chuta de volta para o login
+  };
+
   return (
     <div className="admin-container">
       <header className="admin-header">
         <h1 className="admin-title">Painel de Controle</h1>
+        {/* 🚪 BOTÃO DE SAIR ADICIONADO AQUI */}
+      <button onClick={handleLogout} className="btn-logout">
+        Sair do Painel
+      </button>
         <p className="admin-subtitle">Gerencie os produtos e pedidos da Dupla do Ateliê</p>
       </header>
 

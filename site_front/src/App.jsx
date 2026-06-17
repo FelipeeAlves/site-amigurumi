@@ -2,37 +2,32 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Loja from './pages/Loja';
 import Admin from './pages/Admin';
-
+import Login from './pages/Login'; // 🆕 Importa a nova página de Login
+import RotaProtegida from './components/RotaProtegida'; // 🆕 Importa o segurança
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Rota principal: quem acessa o site limpo vê a Loja */}
+        {/* Rota pública da Loja - Qualquer um acessa */}
         <Route path="/" element={<Loja />} />
-        
-        {/* Rota admin: quem digita /admin acessa o painel de cadastro */}
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
 
-      {/* O Rodapé pode ficar fixo aqui embaixo, aparecendo em todas as páginas */}
-      <footer style={styles.footer}>
-        <p> Dupla do Ateliê - Todos os direitos reservados. Desenvolvido por Felipe</p>
-      </footer>
+        {/* Rota pública do Login */}
+        <Route path="/login" element={<Login />} />
+
+        {/* 🔒 ROTA PROTEGIDA DO ADMIN */}
+        {/* Reparou que o <Admin /> agora fica "dentro" da RotaProtegida? */}
+        <Route 
+          path="/admin" 
+          element={
+            <RotaProtegida>
+              <Admin />
+            </RotaProtegida>
+          } 
+        />
+      </Routes>
     </Router>
   );
 }
-
-const styles = {
-  footer: {
-    textAlign: 'center',
-    padding: '20px',
-    backgroundColor: '#343a40',
-    color: 'white',
-    fontSize: '0.9rem',
-    width: '100%',
-    boxSizing: 'border-box'
-  }
-};
 
 export default App;

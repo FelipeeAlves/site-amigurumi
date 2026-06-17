@@ -147,3 +147,18 @@
 .btn-deletar:hover {
   background-color: #c82333;
 }
+
+.btn-logout {
+  background-color: #ea4335; /* Vermelho para indicar saída */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: #c5372b;
+}
