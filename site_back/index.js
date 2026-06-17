@@ -55,6 +55,25 @@ app.post('/api/pedidos', async (req, res) => {
   }
 });
 
+app.get('/api/pedidos', async (req, res) => {
+  try {
+    const pedidos = await Pedido.find();
+    res.json(pedidos);
+  } catch (erro) {
+    res.status(500).json({ mensagem: 'Erro ao buscar pedidos.', erro: erro.message });
+  }
+});
+
+app.delete('/api/produtos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Produto.findByIdAndDelete(id);
+    res.json({ mensagem: 'Produto deletado com sucesso!' });
+  } catch (erro) {
+    res.status(500).json({ mensagem: 'Erro ao deletar produto.', erro: erro.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando com sucesso na porta ${PORT}`);
