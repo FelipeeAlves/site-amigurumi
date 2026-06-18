@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt'; 
-import jwt from 'jsonwebtoken'; // 🆕 Importação do JWT para gerar o "crachá" de acesso
+import jwt from 'jsonwebtoken'; 
 import Pedido from './models/Pedido.js';
 import Produto from './models/Produto.js'; 
 import Usuario from './models/Usuario.js'; 
@@ -24,7 +24,9 @@ app.get('/', (req, res) => {
   res.send('Servidor do Amigurumi está online!');
 });
 
-// 📑 ROTA PARA CADASTRAR PRODUTO (POST)
+// ==================== ROTAS DE PRODUTOS ====================
+
+// 📑 CADASTRAR PRODUTO (POST)
 app.post('/api/produtos', async (req, res) => {
   try {
     const { nome, preco, tamanho, imagem } = req.body;
@@ -36,7 +38,7 @@ app.post('/api/produtos', async (req, res) => {
   }
 });
 
-// 🛒 ROTA PARA LISTAR PRODUTOS NO SITE (GET)
+// 🛒 LISTAR PRODUTOS NA LOJA (GET)
 app.get('/api/produtos', async (req, res) => {
   try {
     const produtos = await Produto.find();
@@ -46,29 +48,7 @@ app.get('/api/produtos', async (req, res) => {
   }
 });
 
-// ROTA DE PEDIDOS (POST)
-app.post('/api/pedidos', async (req, res) => {
-  try {
-    const { produtoNome, preco } = req.body;
-    const novoPedido = new Pedido({ produtoNome, preco });
-    await novoPedido.save();
-    res.status(201).json({ mensagem: 'Pedido recebido!', pedido: novoPedido });
-  } catch (erro) {
-    res.status(500).json({ mensagem: 'Erro ao salvar pedido.', erro: erro.message });
-  }
-});
-
-// ROTA PARA LISTAR OS PEDIDOS (GET)
-app.get('/api/pedidos', async (req, res) => {
-  try {
-    const pedidos = await Pedido.find();
-    res.json(pedidos);
-  } catch (erro) {
-    res.status(500).json({ mensagem: 'Erro ao buscar pedidos.', erro: erro.message });
-  }
-});
-
-// ROTA PARA DELETAR PRODUTO (DELETE)
+// 🗑️ DELETAR PRODUTO (DELETE)
 app.delete('/api/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -79,7 +59,62 @@ app.delete('/api/produtos/:id', async (req, res) => {
   }
 });
 
-// 👤 ROTA PARA CADASTRAR O USUÁRIO ADMIN (POST)
+
+// ==================== ROTAS DE PEDIDOS ====================
+
+// 🛒 1. CRIAR NOVO PEDIDO (POST) - Chamado pela Loja
+app.post('/api/pedidos', async (req, res) => {
+  try {
+    const { produtoNome, preco } = req.body;
+    
+    const novoPedido = new Pedido({ 
+      produtoNome, 
+      preco,
+      status: 'Pendente' 
+    });
+    
+    await novoPedido.save();
+    res.status(201).json({ mensagem: 'Pedido recebido!', pedido: novoPedido });
+  } catch (erro) {
+    res.status(500).json({ mensagem: 'Erro ao salvar pedido.', erro: erro.message });
+  }
+});
+
+// 📋 2. LISTAR APENAS PEDIDOS PENDENTES (GET) - Chamado pelo Admin
+app.get('/api/pedidos', async (req, res) => {
+  try {
+    const pedidos = await Pedido.find({ status: 'Pendente' });
+    res.json(pedidos);
+  } catch (erro) {
+    res.status(500).json({ mensagem: 'Erro ao buscar pedidos.', erro: erro.message });
+  }
+});
+
+// 🆕 3. FINALIZAR PEDIDO (PUT) - Chamado pelo botão no Admin
+app.put('/api/pedidos/:id/finalizar', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const pedidoAtualizado = await Pedido.findByIdAndUpdate(
+      id, 
+      { status: 'Finalizado' }, 
+      { new: true }
+    );
+
+    if (!pedidoAtualizado) {
+      return res.status(404).json({ mensagem: 'Pedido não encontrado.' });
+    }
+
+    res.json({ mensagem: '🎉 Pedido finalizado com sucesso!', pedido: pedidoAtualizado });
+  } catch (erro) {
+    res.status(500).json({ mensagem: 'Erro ao finalizar pedido.', erro: erro.message });
+  }
+});
+
+
+// ==================== ROTAS DE AUTENTICAÇÃO ====================
+
+// 👤 CADASTRAR USUÁRIO ADMIN (POST)
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { nome, email, senha } = req.body;
@@ -100,37 +135,30 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-// 🔑 🆕 ROTA DE LOGIN (POST) - Verifica os dados e entrega o Token
+// 🔑 REALIZAR LOGIN (POST)
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
 
-    // 1. Busca o usuário pelo e-mail informado
     const usuario = await Usuario.findOne({ email });
     if (!usuario) {
-      // Retorna 400 se o e-mail não existir no banco
       return res.status(400).json({ mensagem: 'E-mail ou senha incorretos.' });
     }
 
-    // 2. Compara a senha digitada com a senha criptografada que está no banco
     const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
     if (!senhaCorreta) {
-      // Retorna 400 se a senha estiver errada
       return res.status(400).json({ mensagem: 'E-mail ou senha incorretos.' });
     }
 
-    // 3. Se passou pelos testes, gera o Token JWT (o crachá de acesso)
-    // Usamos uma palavra-chave para assinar o token ('SEGREDO_DO_ATELIE') e dizemos que ele expira em 2 horas
     const token = jwt.sign(
       { id: usuario._id, nome: usuario.nome }, 
       'SEGREDO_DO_ATELIE', 
       { expiresIn: '2h' }
     );
 
-    // 4. Responde enviando o token gerado e os dados básicos do usuário logado
     res.json({
       mensagem: '🎉 Login realizado com sucesso!',
-      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMzIzODRjZWVmMGM3NGU1ODcyMzYzZSIsIm5vbWUiOiJGZWxpcGUiLCJpYXQiOjE3ODE2NzY2MjYsImV4cCI6MTc4MTY4MzgyNn0.lHsiR7k4L2ydd9GCqw6JJ9wtyiCVtfEX2fYYlL3Zkcg",
+      token: token,
       usuario: {
         id: usuario._id,
         nome: usuario.nome,
