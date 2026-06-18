@@ -18,6 +18,14 @@
   background-color: #ffe3e3;
 }
 
+.loja-container footer {
+    text-Align: center;
+    padding: 20px;
+    background-Color: #343a40;
+    color: white;
+    font-Size: 0.9rem;
+  }
+
 .loja-title {
   font-size: 2.5rem;
   color: #d63384;
@@ -43,16 +51,17 @@
 }
 
 .grid-produtos {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
+  display: grid;
+  /* Cria 4 colunas de tamanhos iguais se houver espaço (mínimo de 220px por card) */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px; /* Espaçamento entre os cards */
+  width: 100%;
 }
 
 .produto-card {
   background-color: white;
   border-radius: 15px;
-  width: 280px;
+  /* width: 280px */
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   text-align: center;

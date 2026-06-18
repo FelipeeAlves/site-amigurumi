@@ -62,6 +62,10 @@ function Loja() {
           )}
         </div>
       </main>
+      {/* O Rodapé pode ficar fixo aqui embaixo, aparecendo em todas as páginas */}
+      <footer>
+        <p>2026 Dupla do Ateliê - Todos os direitos reservados. Desenvolvido por Felipe A.</p>
+      </footer>
     </div>
   );
 }
