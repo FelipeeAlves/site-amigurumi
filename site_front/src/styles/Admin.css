@@ -162,3 +162,18 @@
 .btn-logout:hover {
   background-color: #c5372b;
 }
+
+.btn-finalizar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-finalizar:hover {
+  background-color: #218838;
+}

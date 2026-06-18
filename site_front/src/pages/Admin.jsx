@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Admin.css'; // 🔥 DOIS PONTOS (../) para sair de pages e ir para styles!
+import '../styles/Admin.css'; 
 
 function Admin() {
   const [pedidos, setPedidos] = useState([]);
@@ -27,8 +27,7 @@ function Admin() {
       carregarDados();
     }, 5000);
 
-    return() => {clearInterval(intervalo)
-    }
+    return () => clearInterval(intervalo);
   }, []);
 
   const handleInputChange = (e) => {
@@ -71,20 +70,34 @@ function Admin() {
     }
   };
 
+  const finalizarPedido = async (id) => {
+    try {
+      const resposta = await fetch(`http://localhost:5000/api/pedidos/${id}/finalizar`, {
+        method: 'PUT',
+      });
+      
+      if (resposta.ok) {
+        alert("✅ Pedido marcado como Finalizado!");
+        carregarDados(); 
+      }
+    } catch (erro) {
+      alert("⚠️ Erro ao finalizar o pedido.");
+    }
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem('token');     // Apaga o crachá de acesso
-    localStorage.removeItem('adminNome'); // Apaga o nome salvo
-    window.location.href = '/login';      // Chuta de volta para o login
+    localStorage.removeItem('token');     
+    localStorage.removeItem('adminNome'); 
+    window.location.href = '/login';      
   };
 
   return (
     <div className="admin-container">
       <header className="admin-header">
         <h1 className="admin-title">Painel de Controle</h1>
-        {/* 🚪 BOTÃO DE SAIR ADICIONADO AQUI */}
-      <button onClick={handleLogout} className="btn-logout">
-        Sair do Painel
-      </button>
+        <button onClick={handleLogout} className="btn-logout">
+          Sair do Painel
+        </button>
         <p className="admin-subtitle">Gerencie os produtos e pedidos da Dupla do Ateliê</p>
       </header>
 
@@ -125,6 +138,7 @@ function Admin() {
             {produtos.length === 0 ? (
               <p>Nenhum produto cadastrado ainda. 🧸</p>
             ) : (
+              /* 🔥 Corrigido aqui de products.map para produtos.map */
               produtos.map((prod) => (
                 <li key={prod._id} className="lista-item">
                   <div className="item-info">
@@ -138,19 +152,22 @@ function Admin() {
           </ul>
         </section>
 
-        {/* PEDIDOS */}
+        {/* PEDIDOS PENDENTES */}
         <section className="admin-card">
-          <h2 className="card-title">Pedidos Recebidos ({pedidos.length})</h2>
+          <h2 className="card-title">Pedidos Pendentes ({pedidos.length})</h2>
           <ul className="admin-lista">
             {pedidos.length === 0 ? (
-              <p>Nenhum pedido recebido por enquanto. 🕒</p>
+              <p>Nenhum pedido pendente por enquanto. 🕒</p>
             ) : (
               pedidos.map((ped) => (
                 <li key={ped._id} className="lista-item">
-                  <div className="item-info" handleCompra>
+                  <div className="item-info">
                     <span className="item-nome">📦 {ped.produtoNome}</span>
-                    <span className="item-detalhes">Valor: R$ {ped.preco} | Status: Novo Pedido</span>
+                    <span className="item-detalhes">Valor: R$ {ped.preco} | Status: {ped.status}</span>
                   </div>
+                  <button onClick={() => finalizarPedido(ped._id)} className="btn-finalizar">
+                    Finalizar
+                  </button>
                 </li>
               ))
             )}
