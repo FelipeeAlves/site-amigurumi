@@ -26,11 +26,15 @@ app.get('/', (req, res) => {
 
 // ==================== ROTAS DE PRODUTOS ====================
 
-// 📑 CADASTRAR PRODUTO (POST)
+// 📑 CADASTRAR PRODUTO (POST) - Atualizado com Categoria
 app.post('/api/produtos', async (req, res) => {
   try {
-    const { nome, preco, tamanho, imagem } = req.body;
-    const novoProduto = new Produto({ nome, preco, tamanho, imagem });
+    // 🆕 Adicionamos 'categoria' aqui na desestruturação do req.body
+    const { nome, preco, tamanho, imagem, categoria } = req.body;
+    
+    // 🆕 Passamos a categoria para o novo Produto
+    const novoProduto = new Produto({ nome, preco, tamanho, imagem, categoria });
+    
     await novoProduto.save();
     res.status(201).json({ mensagem: 'Produto cadastrado com sucesso!', produto: novoProduto });
   } catch (erro) {
