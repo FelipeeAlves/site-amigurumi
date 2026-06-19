@@ -112,3 +112,47 @@
 .produto-botao:hover {
   background-color: #b8226e;
 }
+
+/* Container do Menu de Categorias */
+.loja-menu {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0 20px 0;
+  flex-wrap: wrap;
+}
+
+/* Estilo padrão dos botões do menu */
+.menu-btn {
+  background-color: transparent;
+  color: #6c757d;
+  border: 2px solid #6c757d;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Efeito de passar o mouse */
+.menu-btn:hover {
+  color: #d63384;
+  border-color: #d63384;
+  background-color: rgba(214, 51, 132, 0.05);
+}
+
+/* Classe de botão Ativo (Destaque da Categoria selecionada) */
+.menu-btn.ativo {
+  background-color: #d63384;
+  color: white;
+  border-color: #d63384;
+  box-shadow: 0 4px 10px rgba(214, 51, 132, 0.2);
+}
+
+/* Pequeno espaçamento para a frase de efeito */
+.loja-subtitle-frase {
+  font-size: 1.1rem;
+  color: #8c959d;
+  font-style: italic;
+}

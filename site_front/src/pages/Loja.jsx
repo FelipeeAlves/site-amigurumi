@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Loja.css'; // Apontando corretamente para a pasta styles
 
 function Loja() {
-  const [amigurumis, setAmigurumis] = useState([]);
+  const [produtos, setProdutos] = useState([]); // Mudamos o nome para ficar genérico (produtos)
+  const [categoriaAtiva, setCategoriaAtiva] = useState('Todos'); // 🆕 Estado para controlar a aba ativa
 
   const carregarProdutos = async () => {
     try {
       const resposta = await fetch('http://localhost:5000/api/produtos');
       const dados = await resposta.json();
-      setAmigurumis(dados);
+      setProdutos(dados);
     } catch (erro) {
       console.error("Erro ao buscar produtos:", erro);
     }
@@ -34,21 +35,65 @@ function Loja() {
     }
   };
 
+  // 🆕 LÓGICA DE FILTRAGEM: Se for 'Todos', mostra tudo. Se não, filtra pela categoria do banco!
+  const produtosFiltrados = categoriaAtiva === 'Todos' 
+    ? produtos 
+    : produtos.filter(item => item.categoria === categoriaAtiva);
+
   return (
     <div className="loja-container">
       <header className="loja-header">
         <h1 className="loja-title">Dupla do Ateliê</h1>
-        <p className="loja-subtitle">Bordados | Amigurumis | Crochê | Patchwork</p>
-        <p className="loja-subtitle">Feitos à mão com amor, ponto por ponto.</p>
+        
+        {/* 🆕 BOTÕES DE CATEGORIA EM LUGAR DO TEXTO ESTÁTICO */}
+        <nav className="loja-menu">
+          <button 
+            className={`menu-btn ${categoriaAtiva === 'Todos' ? 'ativo' : ''}`} 
+            onClick={() => setCategoriaAtiva('Todos')}
+          >
+            Todos
+          </button>
+          <button 
+            className={`menu-btn ${categoriaAtiva === 'Bordados' ? 'ativo' : ''}`} 
+            onClick={() => setCategoriaAtiva('Bordados')}
+          >
+            Bordados
+          </button>
+          <button 
+            className={`menu-btn ${categoriaAtiva === 'Amigurumis' ? 'ativo' : ''}`} 
+            onClick={() => setCategoriaAtiva('Amigurumis')}
+          >
+            Amigurumis
+          </button>
+          <button 
+            className={`menu-btn ${categoriaAtiva === 'Crochê' ? 'ativo' : ''}`} 
+            onClick={() => setCategoriaAtiva('Crochê')}
+          >
+            Crochê
+          </button>
+          <button 
+            className={`menu-btn ${categoriaAtiva === 'Patchwork' ? 'ativo' : ''}`} 
+            onClick={() => setCategoriaAtiva('Patchwork')}
+          >
+            Patchwork
+          </button>
+        </nav>
+
+        <p className="loja-subtitle-frase">Feitos à mão com amor, ponto por ponto.</p>
       </header>
 
       <main className="vitrine-container">
-        <h2 className="vitrine-title">Nossas Criações Fofas</h2>
+        {/* 🆕 Título dinâmico que muda de acordo com o filtro selecionado */}
+        <h2 className="vitrine-title">
+          {categoriaAtiva === 'Todos' ? 'Nossas Criações Fofas' : `Criações em ${categoriaAtiva}`}
+        </h2>
+
         <div className="grid-produtos">
-          {amigurumis.length === 0 ? (
-            <p>Nenhum amigurumi disponível no momento. Volte logo! 🧸</p>
+          {/* 🔥 Mudamos de amigurumis.length para produtosFiltrados.length */}
+          {produtosFiltrados.length === 0 ? (
+            <p>Nenhum produto em "{categoriaAtiva}" disponível no momento. Volte logo! 🧸</p>
           ) : (
-            amigurumis.map((item) => (
+            produtosFiltrados.map((item) => (
               <div key={item._id} className="produto-card">
                 <img src={item.imagem} alt={item.nome} className="produto-imagem" />
                 <h3 className="produto-nome">{item.nome}</h3>
@@ -62,7 +107,7 @@ function Loja() {
           )}
         </div>
       </main>
-      {/* O Rodapé pode ficar fixo aqui embaixo, aparecendo em todas as páginas */}
+
       <footer>
         <p>2026 Dupla do Ateliê - Todos os direitos reservados. Desenvolvido por Felipe A.</p>
       </footer>

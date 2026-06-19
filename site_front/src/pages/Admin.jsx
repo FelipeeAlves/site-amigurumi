@@ -4,7 +4,8 @@ import '../styles/Admin.css';
 function Admin() {
   const [pedidos, setPedidos] = useState([]);
   const [produtos, setProdutos] = useState([]);
-  const [novoProduto, setNovoProduto] = useState({ nome: '', preco: '', tamanho: '', imagem: '' });
+  // 🆕 Inicializando o objeto já com a categoria padrão 'Amigurumis'
+  const [novoProduto, setNovoProduto] = useState({ nome: '', preco: '', tamanho: '', imagem: '', categoria: 'Amigurumis' });
 
   const carregarDados = async () => {
     try {
@@ -46,7 +47,8 @@ function Admin() {
 
       if (resposta.ok) {
         alert("🎉 Produto cadastrado com sucesso!");
-        setNovoProduto({ nome: '', preco: '', tamanho: '', imagem: '' });
+        // 🆕 Reseta limpando os campos mas mantendo a categoria padrão
+        setNovoProduto({ nome: '', preco: '', tamanho: '', imagem: '', categoria: 'Amigurumis' });
         carregarDados();
       }
     } catch (erro) {
@@ -105,10 +107,10 @@ function Admin() {
         
         {/* FORMULÁRIO */}
         <section className="admin-card">
-          <h2 className="card-title">Cadastrar Novo Amigurumi</h2>
+          <h2 className="card-title">Cadastrar Novo Produto</h2>
           <form onSubmit={cadastrarProduto} className="admin-form">
             <div className="form-group">
-              <label>Nome do Amigurumi:</label>
+              <label>Nome do Produto:</label>
               <input type="text" name="nome" value={novoProduto.nome} onChange={handleInputChange} className="form-input" required />
             </div>
 
@@ -127,6 +129,17 @@ function Admin() {
               <input type="text" name="imagem" value={novoProduto.imagem} onChange={handleInputChange} className="form-input" required />
             </div>
 
+            {/* 🆕 NOVO CAMPO SELECT PARA SELECIONAR A CATEGORIA */}
+            <div className="form-group">
+              <label>Categoria:</label>
+              <select name="categoria" value={novoProduto.categoria} onChange={handleInputChange} className="form-input" required>
+                <option value="Amigurumis">Amigurumis</option>
+                <option value="Bordados">Bordados</option>
+                <option value="Crochê">Crochê</option>
+                <option value="Patchwork">Patchwork</option>
+              </select>
+            </div>
+
             <button type="submit" className="btn-cadastrar">Salvar Produto no Banco</button>
           </form>
         </section>
@@ -138,12 +151,12 @@ function Admin() {
             {produtos.length === 0 ? (
               <p>Nenhum produto cadastrado ainda. 🧸</p>
             ) : (
-              /* 🔥 Corrigido aqui de products.map para produtos.map */
               produtos.map((prod) => (
                 <li key={prod._id} className="lista-item">
                   <div className="item-info">
                     <span className="item-nome">{prod.nome}</span>
-                    <span className="item-detalhes">Tamanho: {prod.tamanho} cm | R$ {prod.preco}</span>
+                    {/* 🆕 Exibindo a categoria também na listagem do admin para facilitar */}
+                    <span className="item-detalhes">Categoria: {prod.categoria || 'Amigurumis'} | Tamanho: {prod.tamanho} cm | R$ {prod.preco}</span>
                   </div>
                   <button onClick={() => deletarProduto(prod._id)} className="btn-deletar">Deletar</button>
                 </li>
