@@ -38,16 +38,38 @@ function Admin() {
 
   const cadastrarProduto = async (e) => {
     e.preventDefault();
+
+    // 🆕 TRATAMENTO DE ERRO / VALIDAÇÃO DO PREÇO
+    // Remove "R$", espaços e troca vírgula por ponto para o JavaScript entender como número
+    let precoLimpo = novoProduto.preco
+      .replace('R$', '')
+      .replace(/\s/g, '')
+      .replace(',', '.');
+
+    // Converte para número flutuante
+    let precoNumero = parseFloat(precoLimpo);
+
+    // Se não for um número válido ou for menor/igual a zero, barra o cadastro
+    if (isNaN(precoNumero) || precoNumero <= 0) {
+      alert("⚠️ Por favor, insenra um valor numérico válido para o preço (ex: 89.90 ou 89,90).");
+      return; // Para a execução aqui e não salva no banco
+    }
+
+    // 🔥 Força o número a ter exatamente duas casas decimais (ex: 89.90)
+    const produtoFormatado = {
+      ...novoProduto,
+      preco: precoNumero.toFixed(2)
+    };
+
     try {
       const resposta = await fetch('http://localhost:5000/api/produtos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novoProduto),
+        body: JSON.stringify(produtoFormatado), // 🆕 Enviamos o produto já com o preço formatado!
       });
 
       if (resposta.ok) {
         alert("🎉 Produto cadastrado com sucesso!");
-        // 🆕 Reseta limpando os campos mas mantendo a categoria padrão
         setNovoProduto({ nome: '', preco: '', tamanho: '', imagem: '', categoria: 'Amigurumis' });
         carregarDados();
       }
