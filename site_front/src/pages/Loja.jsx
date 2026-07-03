@@ -8,7 +8,7 @@ function Loja() {
 
   const carregarProdutos = async () => {
     try {
-      const resposta = await fetch('http://localhost:5000/api/produtos');
+      const resposta = await fetch('https://dupla-atelie-backend.onrender.com/api/produtos');
       const dados = await resposta.json();
       setProdutos(dados);
     } catch (erro) {
@@ -23,7 +23,7 @@ function Loja() {
   // 🛠️ FUNÇÃO ATUALIZADA: Salva no Banco de Dados E envia para o WhatsApp!
   const handleCompra = async (nomeProduto, precoProduto) => {
     try {
-      const resposta = await fetch('http://localhost:5000/api/pedidos', {
+      const resposta = await fetch('https://dupla-atelie-backend.onrender.com/api/pedidos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ produtoNome: nomeProduto, preco: precoProduto }),
@@ -33,7 +33,7 @@ function Loja() {
       
       if (resposta.ok) {
         // 1. Seu número de telefone (Coloque 55 + DDD + seu número, sem espaços ou traços!)
-        const numeroTelefone = "5511974899717"; 
+        const numeroTelefone = "5511999999999"; 
         
         // 2. Montando a mensagem com quebras de linha (%0A) e negritos (*)
         const mensagem = `Olá, Dupla do Ateliê! ❤️%0A` +
@@ -82,7 +82,7 @@ function Loja() {
           
           <input 
             type="text" 
-            placeholder="🔎 Procurar um produto específico..." 
+            placeholder="🔎 Procurar Amigurumi" 
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
             className="busca-input"
