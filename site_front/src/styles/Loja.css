@@ -5,17 +5,21 @@
   box-sizing: border-box;
 }
 
+:root {
+  color-scheme: light;
+}
+
 .loja-container {
   font-family: Arial, sans-serif;
-  color: #333;
-  background-color: #fff5f5;
+  color: #333333 !important; /* Força o texto escuro padrão */
+  background-color: #fff5f5 !important; /* Força o fundo rosinha claro */
   min-height: 100vh;
 }
 
 .loja-header {
   text-align: center;
   padding: 40px 20px;
-  background-color: #ffe3e3;
+  background-color: #ffe3e3 !important; /* Força o cabeçalho pastel */
 }
 
 .loja-container footer {
@@ -210,4 +214,13 @@
     width: 90% !important;             /* Deixa a barra de busca larga e bonita no celular */
     max-width: 320px !important;       /* Evita que ela fique gigante se a tela for um pouco maior */
   }
+
+  .loja-header {
+  background-color: #ffe3e3 !important; /* Força o cabeçalho pastel */
+  }
+
+  .loja-container {
+  color: #333333 !important; /* Força o texto escuro padrão */
+  background-color: #fff5f5 !important; /* Força o fundo rosinha claro */
+}
 }
