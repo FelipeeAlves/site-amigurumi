@@ -37,7 +37,7 @@ function Loja() {
         
         // 2. Montando a mensagem com quebras de linha (%0A) e negritos (*)
         const mensagem = `Olá, Dupla do Ateliê! ❤️%0A` +
-                         `Gostaria de encomendar um amigurumi!%0A%0A` +
+                         `Gostaria de informações sobre este amigurumi!%0A%0A` +
                          `🧸 *Produto:* ${nomeProduto}%0A` +
                          `💰 *Valor:* R$ ${precoProduto}%0A%0A` +
                          `Como faço para combinar a entrega e o pagamento?`;
@@ -81,11 +81,11 @@ function Loja() {
           <p className="loja-subtitle-frase">Feitos à mão com amor, ponto por ponto.</p>
           
           <input 
+            className="busca-input"
             type="text" 
             placeholder="🔎 Procurar Amigurumi" 
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            className="busca-input"
           />
         </div>
       </header>

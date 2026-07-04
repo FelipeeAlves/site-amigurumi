@@ -61,7 +61,7 @@
 .produto-card {
   background-color: white;
   border-radius: 15px;
-  /* width: 280px */
+  width: 280px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   text-align: center;
@@ -153,6 +153,61 @@
 /* Pequeno espaçamento para a frase de efeito */
 .loja-subtitle-frase {
   font-size: 1.1rem;
-  color: #8c959d;
+  color: #616161;
   font-style: italic;
+}
+
+/* Estilização da barra de pesquisa */
+.busca-input {
+  padding: 10px 18px;
+  width: 320px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Efeito de foco quando o usuário clica para digitar */
+.busca-input:focus {
+  border-color: #d63384;
+  box-shadow: 0 4px 12px rgba(214, 51, 132, 0.15);
+  width: 350px; /* Dá uma leve expandida charmosa ao focar */
+}
+
+/* Container para alinhar a frase e o campo de busca lado a lado */
+.loja-subheader-busca {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 1300px;
+  margin: 10px auto 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+/* Configuração especial para telas menores que 510x810 */
+/* Configuração para telas de celular (menores que 510px de largura) */
+@media (max-width: 510px) {
+  .loja-subheader-busca {
+    display: flex !important;
+    flex-direction: column !important; /* Força o texto para cima e o input para baixo */
+    align-items: center !important;    /* Centraliza os dois elementos horizontalmente */
+    text-align: center !important;     /* Centraliza o texto da frase */
+    gap: 15px !important;              /* Cria um espaçamento perfeito entre a frase e a barra */
+    width: 100% !important;            /* Garante que o container ocupe a largura da tela */
+    padding: 0 10px !important;        /* Evita que encoste nas bordas do celular */
+  }
+
+  .loja-subtitle-frase {
+    margin: 0 !important;              /* Remove margens antigas que possam quebrar o layout */
+    width: 100% !important;            /* Permite que o texto ocupe o espaço correto para quebrar linha */
+  }
+
+  .busca-input {
+    width: 90% !important;             /* Deixa a barra de busca larga e bonita no celular */
+    max-width: 320px !important;       /* Evita que ela fique gigante se a tela for um pouco maior */
+  }
 }
