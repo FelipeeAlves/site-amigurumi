@@ -65,7 +65,14 @@ function Loja() {
   return (
     <div className="loja-container">
       <header className="loja-header">
-        <h1 className="loja-title">Dupla do Ateliê</h1>
+        <div className="loja-brand-container">
+          <img 
+            src="/logo-atelie.jpg"
+            alt="Logo Dupla do Ateliê" 
+            className="loja-logo"
+          />
+          <h1 className="loja-title">Dupla do Ateliê</h1>
+        </div>
         
         {/* BOTÕES DE CATEGORIA */}
         <nav className="loja-menu">

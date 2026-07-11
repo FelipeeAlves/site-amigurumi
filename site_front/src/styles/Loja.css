@@ -20,6 +20,24 @@
   text-align: center;
   padding: 40px 20px;
   background-color: #ffe3e3 !important; /* Força o cabeçalho pastel */
+  gap: 15px;            /* Espaço charmoso entre a foto e o texto */
+  margin-bottom: 15px;
+}
+
+.loja-brand-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;            /* Espaço charmoso entre a foto e o texto */
+  margin-bottom: 15px;  /* Empurra o menu de categorias um pouquinho para baixo */
+}
+
+.loja-logo {
+  width: 150px;          /* Altura e largura iguais são essenciais para o círculo */
+  height: 150px;
+  border-radius: 50%;   /* Transforma a imagem quadrada em redonda */
+  object-fit: cover;    /* Evita que a foto fique esticada ou amassada */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .loja-container footer {
@@ -34,6 +52,7 @@
   font-size: 2.5rem;
   color: #d63384;
   margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .loja-subtitle {
@@ -231,5 +250,14 @@
   .grid-produtos {
     justify-content: center !important; /* ⬅️ ADICIONE ESTA LINHA AQUI! Centraliza os cards no meio da página */
     grid-template-columns: none; 
+  }
+
+  .loja-logo {
+    width: 80px;
+    height: 80px; /* Diminui um pouquinho para telas pequenas */
+  }
+
+  .loja-title {
+    font-size: 2rem; /* Ajusta o texto proporcionalmente */
   }
 }
