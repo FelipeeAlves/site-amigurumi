@@ -253,8 +253,8 @@
   }
 
   .loja-logo {
-    width: 80px;
-    height: 80px; /* Diminui um pouquinho para telas pequenas */
+    width: 100px;
+    height: 100px; /* Diminui um pouquinho para telas pequenas */
   }
 
   .loja-title {
