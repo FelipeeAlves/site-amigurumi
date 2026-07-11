@@ -33,11 +33,11 @@ function Loja() {
       
       if (resposta.ok) {
         // 1. Seu número de telefone (Coloque 55 + DDD + seu número, sem espaços ou traços!)
-        const numeroTelefone = "5511999999999"; 
+        const numeroTelefone = "5519997175440"; 
         
         // 2. Montando a mensagem com quebras de linha (%0A) e negritos (*)
         const mensagem = `Olá, Dupla do Ateliê! ❤️%0A` +
-                         `Gostaria de informações sobre este amigurumi!%0A%0A` +
+                         `Gostaria de encomendar este amigurumi!%0A%0A` +
                          `🧸 *Produto:* ${nomeProduto}%0A` +
                          `💰 *Valor:* R$ ${precoProduto}%0A%0A` +
                          `Como faço para combinar a entrega e o pagamento?`;
