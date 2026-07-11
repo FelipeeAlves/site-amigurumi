@@ -3,12 +3,14 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt'; 
-import jwt from 'jsonwebtoken'; 
+import jwt from 'jsonwebtoken';
+
+dotenv.config();
+
 import Pedido from './models/Pedido.js';
 import Produto from './models/Produto.js'; 
 import Usuario from './models/Usuario.js'; 
-
-dotenv.config();
+import upload from './config/multer.js';
 
 const app = express();
 
@@ -24,21 +26,65 @@ app.get('/', (req, res) => {
   res.send('Servidor do Amigurumi está online!');
 });
 
+// 🎯 ROTA TEMPORÁRIA PARA VER O ERRO REAL DO CLOUDINARY
+app.get('/api/teste-cloudinary', async (req, res) => {
+  try {
+    // Carrega o cloudinary dinamicamente de forma correta
+    const cloudinaryModule = await import('cloudinary');
+    const cloudinary = cloudinaryModule.v2;
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_NAME,
+      api_key: process.env.CLOUDINARY_KEY,
+      api_secret: process.env.CLOUDINARY_SECRET
+    });
+
+    const resultado = await cloudinary.api.ping();
+    res.json({ mensagem: "Conexão com Cloudinary OK!", resultado });
+  } catch (erro) {
+    res.status(500).json({ 
+      mensagem: "O Cloudinary rejeitou suas chaves ou elas não foram lidas!", 
+      erro_mensagem: erro.message,
+      detalhes: erro
+    });
+  }
+});
+
 // ==================== ROTAS DE PRODUTOS ====================
 
-// 📑 CADASTRAR PRODUTO (POST) - Atualizado com Categoria
-app.post('/api/produtos', async (req, res) => {
+// 📑 CADASTRAR PRODUTO (POST) - Atualizado com Tratamento de Erro Detalhado
+app.post('/api/produtos', upload.single('imagem'), async (req, res) => {
   try {
-    // 🆕 Adicionamos 'categoria' aqui na desestruturação do req.body
-    const { nome, preco, tamanho, imagem, categoria } = req.body;
+    // Como usamos FormData, os textos chegam normais dentro do req.body
+    const { nome, preco, tamanho, categoria } = req.body;
     
-    // 🆕 Passamos a categoria para o novo Produto
-    const novoProduto = new Produto({ nome, preco, tamanho, imagem, categoria });
+    // O Cloudinary gera o link seguro da foto e nos entrega dentro de req.file.path
+    const imagemUrl = req.file ? req.file.path : ''; 
+    
+    if (!imagemUrl) {
+      return res.status(400).json({ mensagem: 'A foto do produto é obrigatória.' });
+    }
+
+    // Passamos a URL criada pelo Cloudinary para o campo 'imagem' do nosso model do banco
+    const novoProduto = new Produto({ 
+      nome, 
+      preco, 
+      tamanho, 
+      imagem: imagemUrl, 
+      categoria 
+    });
     
     await novoProduto.save();
     res.status(201).json({ mensagem: 'Produto cadastrado com sucesso!', produto: novoProduto });
   } catch (erro) {
-    res.status(500).json({ mensagem: 'Erro ao cadastrar produto.', erro: erro.message });
+    // 🆕 Esse comando força o terminal a abrir o objeto inteiro na marra!
+    console.error("❌ ERRO REAL DETALHADO NO BACKEND:");
+    console.dir(erro, { depth: null }); 
+
+    res.status(500).json({ 
+      mensagem: 'Erro interno ao cadastrar produto.', 
+      erro: erro.message 
+    });
   }
 });
 
@@ -57,9 +103,9 @@ app.delete('/api/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await Produto.findByIdAndDelete(id);
-    res.json({ mensagem: 'Produto deletado com sucesso!' });
+    res.json({ message: 'Produto deletado com sucesso!' });
   } catch (erro) {
-    res.status(500).json({ mensagem: 'Erro ao deletar produto.', erro: erro.message });
+    res.status(500).json({ margin: 'Erro ao deletar produto.', erro: erro.message });
   }
 });
 
