@@ -65,7 +65,7 @@
 .produto-card {
   background-color: white;
   border-radius: 15px;
-  width: 280px;
+  width: 270px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   text-align: center;
@@ -192,7 +192,7 @@
   width: 100%;
 }
 
-/* Configuração especial para telas menores que 510x810 */
+
 /* Configuração para telas de celular (menores que 510px de largura) */
 @media (max-width: 510px) {
   .loja-subheader-busca {
@@ -217,10 +217,17 @@
 
   .loja-header {
   background-color: #ffe3e3 !important; /* Força o cabeçalho pastel */
+  align-items: center !important;
   }
 
   .loja-container {
   color: #333333 !important; /* Força o texto escuro padrão */
   background-color: #fff5f5 !important; /* Força o fundo rosinha claro */
-}
+  align-items: center !important;
+  }
+
+  .grid-produtos {
+    justify-content: center !important; /* ⬅️ ADICIONE ESTA LINHA AQUI! Centraliza os cards no meio da página */
+    grid-template-columns: none; 
+  }
 }
